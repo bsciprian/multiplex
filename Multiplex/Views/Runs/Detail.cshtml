@@ -1,0 +1,53 @@
+﻿@model Multiplex.Models.Runs.RunDetailModel
+<div class="container">
+    <div class="page-header page-header clearfix detailHeading">
+        <h2 class="text-muted">View Run Item</h2>
+    </div>
+</div>
+
+<div class="jumbotron">
+    <div class="row">
+        <div class="col-md-4">
+            <div>
+                <img class="detailImage" src="@Model.MoviePoster" />
+            </div>
+        </div>
+        <div class="col-md-4">
+            <p id="itemTitle">@Model.MovieName</p>
+            <p id="itemDuration">@Model.MovieDuration</p>
+            <p id="itemDescription">@Model.MovieDescription</p>
+            <p id="itemType">@Model.MovieType</p>
+        </div>
+        <div class="col-md-4">
+            <table class="table table-condensed" id="seatsIndexTable">
+                <tbody>
+                    @{ int n = 0;
+                    @for (int i = 0; i < @Model.Rows.Count(); i++)
+                    {
+                    <tr class="runRow">
+                        @for (int j = 0; j < @Model.Rows[i]; j++)
+                        {
+                            <td class="" >
+                                @if (!@Model.Seats[n].IsBooked)
+                                {
+                                <div class="" style='background-color:green;border:1px solid black; text-align:center' onclick="(function() {document.getElementById('@Model.Seats[n].SeatName').style.color = 'red'; })()" id="@Model.Seats[n].SeatName">
+                                    @Model.Seats[n].SeatName
+                                </div>
+                                }
+                                else
+                                {
+                                <div style='background-color:red;border:1px solid black; text-align:center' id="@Model.Seats[n]">
+                                    @Model.Seats[n].SeatName
+                                </div>
+                                }
+                            </td>
+                            n = n + 1;
+                        }
+                    </tr>
+                    }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

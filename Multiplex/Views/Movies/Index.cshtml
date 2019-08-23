@@ -1,0 +1,33 @@
+﻿@model Multiplex.Models.Movies.MovieIndexModel
+
+<div id="movies">
+    <h3>Upcoming movies</h3>
+    <div id="moviesTable">
+        <table class="table table-condensed" id="moviesIndexTable">
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var movie in @Model.Movies)
+                {
+                    <tr class="assetRow">
+                        <td class="">
+                            <div>
+                                <a asp-controller="Movies" asp-action="Detail" asp-route-id="@movie.Id">
+                                    <img src="@movie.Poster" class="imageCell" />
+                                </a>
+                            </div>
+                        </td>
+                        <td class="">@movie.Title</td>
+                        <td class="">@movie.Description</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
