@@ -1,25 +1,24 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Multiplex.Models.Runs;
-using Multiplex.Models.Runs.Multiplex.Models.Runs;
-using MultiplexData;
+﻿using Microsoft.AspNetCore.Mvc;
+using MultiplexServices;
+using MultiplexServices.Models.Runs;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Multiplex.Controllers
 {
     //[Authorize(Roles = "Admin")]
-    public class RunsController : Controller
+    public class RunsController : BaseController<RunDetailModel, RunService>
     {
-        private IMultiplexRun _runs;
-        public RunsController(IMultiplexRun runs)
+        public RunsController(RunService runService) : base(runService)
         {
-            _runs = runs;
+
         }
 
         public IActionResult Index()
        {
-            var runsModels = _runs.GetAll();
+            var runsModels = Service.GetAll();
 
             var listingResult = runsModels.Select(result => new RunIndexListingModel
             {
@@ -40,25 +39,48 @@ namespace Multiplex.Controllers
 
         public IActionResult Detail(int id)
         {
-            var run = _runs.GetById(id);
-
-
-
-            var model = new RunDetailModel
-            {
-                Id = run.Id,
-                MovieName = run.Movie.Title,
-                MoviePoster = run.Movie.Poster,
-                MovieDuration = run.Movie.Duration,
-                MovieType = run.Movie.Type,
-                MovieDescription = run.Movie.Description,
-                DateTime = run.Date,
-                Rows = run.Room.SeatsNumber.Split(',').Select(Int32.Parse).ToList(),
-                Seats = run.SeatsRun.Select(x => new SeatRunDetailModel(x.SeatRoom.SeatName, x.IsBooked)).ToList()
-            };
+            var model = Service.GetById(id);
 
             return View(model);
         }
 
+        [HttpPost]
+        public IActionResult Update(RunDetailModel runDetailModel)
+        {
+            Service.Update(runDetailModel);
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public ActionResult SaveRun(string selectedSeats)
+        {
+            var result = JsonConvert.DeserializeObject<SeatRunDetailViewModel>(selectedSeats);
+            foreach (var seatRun in result.SeatRuns)
+            {
+                Service.Update(seatRun);
+            }
+
+            return RedirectToAction("Runs/Index");
+        }
+
+        public IActionResult AddRun()
+        {
+            var addRunModels = Service.GetAddRunModel();
+            return View(addRunModels);
+        }
+
+        [HttpPost]
+        public IActionResult AddRun(AddRunModel model)
+        {
+            bool addRunModels = Service.AddRunModel(model);
+            if (addRunModels)
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return RedirectToAction("ErrorModel");
+            }
+        }
     }
 }

@@ -1,17 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Multiplex.Models.Rooms;
+﻿using Microsoft.AspNetCore.Mvc;
+using MultiplexServices;
+using MultiplexServices.Models.Rooms;
 
 namespace Multiplex.Controllers
 {
-    public class RoomsController : Controller
-    {
+    public class RoomsController : BaseController<RoomModel, RoomService>
+    { 
+        public RoomsController(RoomService roomService):base(roomService)
+        {
+
+        }
+
         public IActionResult Index()
         {
-            return View();
+            var rooms = Service.GetAll();
+            var model = new RoomIndexModel()
+            {
+                Rooms = rooms
+            };
+            return View(model);
+        }
+
+        public IActionResult Detail(int id)
+        {
+            var model = Service.GetById(id);            
+            return View(model);
         }
 
         public ActionResult AddRoom()
@@ -20,10 +33,25 @@ namespace Multiplex.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddRoom(RoomsModel room)
+        public IActionResult AddRoom(RoomModel roomModel)
         {
-
-            return RedirectToAction("AddRoom");
+            Service.Add(roomModel);
+            return RedirectToAction("Index");
         }
+
+        [HttpPost]
+        public IActionResult Update(RoomModel roomModel)
+        {
+            Service.Update(roomModel);
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public IActionResult Delete(RoomModel roomModel)
+        {
+            Service.Delete(roomModel);
+            return RedirectToAction("Index");
+        }
+
     }
 }

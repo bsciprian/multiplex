@@ -1,0 +1,26 @@
+﻿@model MultiplexServices.Models.Runs.AddRunModel
+    <div class="page-header page-header clearfix detailHeading">
+        <h2 class="text-muted">AddRun</h2>
+    </div>
+</div>
+    <div class="col-md-12">
+        @using (Html.BeginForm("AddRun", "Runs", FormMethod.Post))
+        {
+
+            <p>
+                @Html.LabelFor(p => p.RoomName)
+                @Html.DropDownListFor(p => p.RoomName, new SelectList(Model.RoomNames, "Room"))
+            </p>
+            <p>
+                @Html.LabelFor(p => p.MovieName)
+                @Html.DropDownListFor(p => p.MovieName, new SelectList(Model.MoviesTitle, "Movie"))
+            </p>
+            <p>
+                @Html.LabelFor(p => p.DateTime)
+                @Html.TextBoxFor(p => p.DateTime)
+            </p>
+
+            <input type="submit" value="Save" />
+        }
+    </div>
+

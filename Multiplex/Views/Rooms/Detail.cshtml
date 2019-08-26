@@ -1,13 +1,10 @@
 ﻿@model MultiplexServices.Models.Rooms.RoomModel
-<div class="container">
-    <div class="page-header page-header clearfix detailHeading">
-        <h2 class="text-muted">AddRoom</h2>
-    </div>
-</div>
-<div class="col-md-12">
-    @using (Html.BeginForm("AddRoom", "Rooms", FormMethod.Post))
+
+<div id="rooms">
+    <h3>@Model.RoomName</h3>
+    @using (Html.BeginForm("Update", "Rooms", FormMethod.Post))
     {
-        
+        @Html.HiddenFor(p => p.Id);
         <p>
             @Html.LabelFor(p => p.RoomName)
             @Html.TextBoxFor(p => p.RoomName)
@@ -19,5 +16,10 @@
 
         <input type="submit" value="Save" />
     }
-</div>
 
+    @using (Html.BeginForm("Delete", "Rooms", FormMethod.Post))
+    {
+        @Html.HiddenFor(p => p.Id);        
+        <input type="submit" value="Delete Room" />
+    }
+</div>

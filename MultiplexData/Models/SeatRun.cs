@@ -14,11 +14,6 @@ namespace MultiplexData.Models
         [Key, Column(Order = 1)]
         public int RunId { get; set; }
         public bool IsBooked { get; set; }
-        [Key]
-        public string UserId { get; set; }
-
-        [ForeignKey("UserId")]
-        public virtual User User { get; set; }
 
         public SeatRoom SeatRoom { get; set; }
         public Run Run { get; set; }

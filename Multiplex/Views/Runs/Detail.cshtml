@@ -1,4 +1,4 @@
-﻿@model Multiplex.Models.Runs.RunDetailModel
+﻿@model MultiplexServices.Models.Runs.RunDetailModel
 <div class="container">
     <div class="page-header page-header clearfix detailHeading">
         <h2 class="text-muted">View Run Item</h2>
@@ -19,35 +19,57 @@
             <p id="itemType">@Model.MovieType</p>
         </div>
         <div class="col-md-4">
-            <table class="table table-condensed" id="seatsIndexTable">
-                <tbody>
-                    @{ int n = 0;
-                    @for (int i = 0; i < @Model.Rows.Count(); i++)
-                    {
-                    <tr class="runRow">
-                        @for (int j = 0; j < @Model.Rows[i]; j++)
+
+                @{int n = 0;
+                <table class="table table-condensed" id="seatsIndexTable">
+                    <tbody>
+
+                        @for (int i = 0; i < @Model.Rows.Count(); i++)
                         {
-                            <td class="" >
-                                @if (!@Model.Seats[n].IsBooked)
+                            <tr class="runRow">
+                                @for (int j = 0; j < @Model.Rows[i]; j++)
                                 {
-                                <div class="" style='background-color:green;border:1px solid black; text-align:center' onclick="(function() {document.getElementById('@Model.Seats[n].SeatName').style.color = 'red'; })()" id="@Model.Seats[n].SeatName">
-                                    @Model.Seats[n].SeatName
-                                </div>
+                                    <td class="">
+                                        @if (!@Model.Seats[n].IsBooked)
+                                        {
+                                            @Html.Hidden("IsBooked" + @Model.Seats[n].SeatName, Model.Seats[n].IsBooked)
+                                            <div class="" style='background-color:green;border:1px solid black; text-align:center' onclick="onSeatClicked(@Model.Seats[n].SeatName,@Model.Seats[n].SeatRoomID)" id="@Model.Seats[n].SeatName">
+
+                                                @Model.Seats[n].SeatName
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div style='background-color:red;border:1px solid black; text-align:center' id="@Model.Seats[n]">
+                                                @Model.Seats[n].SeatName
+                                            </div>
+                                        }
+                                    </td>
+                                    n = n + 1;
                                 }
-                                else
-                                {
-                                <div style='background-color:red;border:1px solid black; text-align:center' id="@Model.Seats[n]">
-                                    @Model.Seats[n].SeatName
-                                </div>
-                                }
-                            </td>
-                            n = n + 1;
+
+                            </tr>
+
                         }
-                    </tr>
-                    }
-                    }
-                </tbody>
-            </table>
+
+                    </tbody>
+                </table>
+                <button value="Save" onclick="onSaveClicked()">Save</button>
+            }
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    var selectedSeats = [];
+    function onSeatClicked(name, seatRoomID ) {
+        document.getElementById(name.id).style.color = 'red';
+        selectedSeats.push({RunId:@Model.Id, SeatRoomId: seatRoomID, SeatName: name.id, IsBooked: true});
+    };
+
+    function onSaveClicked() {
+        var selectedSeatsJson = "{\"SeatRuns\":" + JSON.stringify(selectedSeats) + "}";
+        $.post('/Runs/SaveRun', { selectedSeats: selectedSeatsJson }, function (data) {
+        });
+    }
+</script>

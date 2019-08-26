@@ -37,8 +37,9 @@ namespace Multiplex
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddSingleton(Configuration);
-            services.AddScoped<IMultiplexMovie, MovieService>();
-            services.AddScoped<IMultiplexRun, RunService>();
+            services.AddScoped< MovieService>();
+            services.AddScoped<RunService>();
+            services.AddScoped<RoomService>();
             services.AddDbContext<MultiplexDbContext>(options
                 => options.UseSqlServer(Configuration.GetConnectionString("MultiplexConnection")));
            

@@ -1,0 +1,28 @@
+﻿@model MultiplexServices.Models.Rooms.RoomIndexModel
+
+<div id="rooms">
+    <h3>Upcoming movies</h3>
+    <div id="roomsTable">
+        <table class="table table-condensed" id="roomsIndexTable">
+            <thead>
+                <tr>
+                    <th>RoomName</th>
+                    <th>SeatsNumbers</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var room in @Model.Rooms)
+                {
+                    <tr class="assetRow">
+                        <td class="">
+                            <div>
+                                <p><a class="btn btn-lg btn-info" role="button" asp-controller="Rooms" asp-action="Detail" asp-route-id="@room.Id">@room.RoomName</a></p>     
+                            </div>
+                        </td>
+                        <td class="">@room.Seats</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

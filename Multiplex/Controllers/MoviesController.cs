@@ -1,23 +1,24 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Multiplex.Models.Movies;
-using Multiplex.Models.Runs;
 using MultiplexData;
+using MultiplexServices;
+using MultiplexServices.Models.Movies;
+using MultiplexServices.Models.Runs;
 using System;
 using System.Linq;
 
 namespace Multiplex.Controllers
 {
-    public class MoviesController : Controller
+    public class MoviesController : BaseController<MovieIndexListingModel, MovieService>
     {
-        private IMultiplexMovie _movies;
-        public MoviesController(IMultiplexMovie movies)
+        public MoviesController(MovieService movieService) : base(movieService)
         {
-            _movies = movies;
+
         }
 
         public IActionResult Index()
         {
-            var movieModels = _movies.GetUpcomingMovies();
+            var movieModels = Service.GetUpcomingMovies();
+            //var listingResult = Service.GetUpcomingMovies();
 
             var listingResult = movieModels.Select(result => new MovieIndexListingModel
             {
@@ -43,12 +44,12 @@ namespace Multiplex.Controllers
             };
 
             return View(model);
-            
+
         }
 
         public IActionResult Detail(int id)
         {
-            var movie = _movies.GetById(id);
+            var movie = Service.GetById(id);
 
             var model = new MovieDetailModel
             {
@@ -58,7 +59,7 @@ namespace Multiplex.Controllers
                 Duration = movie.Duration,
                 Type = movie.Type,
                 Description = movie.Description,
-                Runs = movie.Runs.Where(r=>r.Date > DateTime.Now).Select(x => new RunIndexListingModel()
+                Runs = movie.Runs.Where(r => r.Date > DateTime.Now).Select(x => new RunIndexListingModel()
                 {
                     Id = x.Id,
                     DateTime = x.Date,
@@ -70,5 +71,16 @@ namespace Multiplex.Controllers
             return View(model);
         }
 
+        public ActionResult AddMovie()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult AddMovie(MovieDetailModel movieDetailModel)
+        {
+            Service.Add(movieDetailModel);
+            return RedirectToAction("Index");
+        }
     }
 }

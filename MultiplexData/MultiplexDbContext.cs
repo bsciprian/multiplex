@@ -36,6 +36,7 @@ namespace MultiplexData
         public virtual DbSet<Run> Runs { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<SeatRun> SeatRun { get; set; }
+        public virtual DbSet<SeatRoom> SeatRoom { get; set; }
         public virtual DbSet<MovieCategory> MovieCategories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
