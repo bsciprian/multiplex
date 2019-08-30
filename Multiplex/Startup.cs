@@ -1,8 +1,6 @@
-﻿
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -118,20 +116,6 @@ namespace Multiplex
                 await UserManager.CreateAsync(user1, "Test@123");
             }
             await UserManager.AddToRoleAsync(user1, "Employee");
-
-            IdentityUser user2 = await UserManager.FindByEmailAsync("user@gmail.com");
-
-            if (user2 == null)
-            {
-                user2 = new IdentityUser()
-                {
-                    UserName = "user@gmail.com",
-                    Email = "user@gmail.com",
-                };
-                await UserManager.CreateAsync(user2, "Test@123");
-            }
-            await UserManager.AddToRoleAsync(user2, "User");
-
         }
     }
 }

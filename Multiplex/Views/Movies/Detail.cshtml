@@ -1,7 +1,7 @@
 ﻿@model MultiplexServices.Models.Movies.MovieDetailModel
 <div class="container">
     <div class="page-header page-header clearfix detailHeading">
-        <h2 class="text-muted">View Run Item</h2>
+        <h2 class="text-muted"></h2>
     </div>
 </div>
 
@@ -9,20 +9,25 @@
     <div class="row">
         <div class="col-md-4">
             <div>
-                <img class="detailImage" src="@Model.Poster" />
+                <img class="detailImage" src="data:image/png;base64,@Model.Poster" />
             </div>
         </div>
         <div class="col-md-4">
-            <p id="itemTitle">@Model.Title</p>
-            <p id="itemDuration">@Model.Duration</p>
+            <h3 id="itemTitle">@Model.Title  @Model.Type</h3>
+            <label>Duration:</label>
+            <p id="itemDuration">@Model.Duration.Hours hours and @Model.Duration.Minutes minutes</p>
+            <label>Description:</label>
             <p id="itemDescription">@Model.Description</p>
-            <p id="itemType">@Model.Type</p>
         </div>
         <div class="col-md-4">
-            @foreach (var run in @Model.Runs)
+            @foreach (var runByDate in @Model.Runs.GroupBy(x => x.DateTime.Date))
             {
+                <p>@runByDate.FirstOrDefault().DateTime.ToString("dd MMM")</p>
+                @foreach (var run in runByDate)
+                {
             <a asp-controller="Runs" asp-action="Detail" asp-route-id="@run.Id"
-               class="btn btn-primary">@run.DateTime</a>
+               class="btn btn-primary">@run.DateTime.ToShortTimeString()</a>
+                }
             }
         </div>
     </div>

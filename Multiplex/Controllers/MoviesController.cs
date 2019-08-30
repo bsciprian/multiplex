@@ -1,47 +1,34 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using MultiplexData;
 using MultiplexServices;
 using MultiplexServices.Models.Movies;
 using MultiplexServices.Models.Runs;
 using System;
+using System.IO;
 using System.Linq;
+using System.Drawing;
 
 namespace Multiplex.Controllers
 {
+    [LogAction]
     public class MoviesController : BaseController<MovieIndexListingModel, MovieService>
     {
-        public MoviesController(MovieService movieService) : base(movieService)
-        {
+        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IConfiguration _configuration;
 
+        public MoviesController(MovieService movieService, IHostingEnvironment hostingEnvironment, IConfiguration configuration) : base(movieService)
+        {
+            _hostingEnvironment = hostingEnvironment;
+            _configuration = configuration;
         }
+
 
         public IActionResult Index()
         {
-            var movieModels = Service.GetUpcomingMovies();
-            //var listingResult = Service.GetUpcomingMovies();
-
-            var listingResult = movieModels.Select(result => new MovieIndexListingModel
-            {
-                Id = result.Id,
-                Title = result.Title,
-                Year = result.Year,
-                Type = result.Type,
-                Duration = result.Duration,
-                Poster = result.Poster,
-                Description = result.Description,
-                Runs = result.Runs.Select(x => new RunIndexListingModel()
-                {
-                    Id = x.Id,
-                    DateTime = x.Date,
-                    MovieId = x.Movie.Id,
-                    RoomName = x.Room.RoomName
-                }).ToList()
-            });
-
-            var model = new MovieIndexModel()
-            {
-                Movies = listingResult
-            };
+            var model = Service.GetUpcomingMovies();
 
             return View(model);
 
@@ -49,25 +36,7 @@ namespace Multiplex.Controllers
 
         public IActionResult Detail(int id)
         {
-            var movie = Service.GetById(id);
-
-            var model = new MovieDetailModel
-            {
-                Id = movie.Id,
-                Title = movie.Title,
-                Poster = movie.Poster,
-                Duration = movie.Duration,
-                Type = movie.Type,
-                Description = movie.Description,
-                Runs = movie.Runs.Where(r => r.Date > DateTime.Now).Select(x => new RunIndexListingModel()
-                {
-                    Id = x.Id,
-                    DateTime = x.Date,
-                    MovieId = x.Movie.Id,
-                    RoomName = x.Room.RoomName
-                }).ToList()
-            };
-
+            var model = Service.GetById(id);
             return View(model);
         }
 
@@ -77,9 +46,27 @@ namespace Multiplex.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddMovie(MovieDetailModel movieDetailModel)
+        public IActionResult AddMovie(MovieDetailModel movieDetailModel, IFormFile file)
         {
-            Service.Add(movieDetailModel);
+            log.Info("Adding a movie started....");
+            try
+            {
+                movieDetailModel.Poster = Path.GetExtension(file.FileName);
+                Service.Add(movieDetailModel);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+            }
+            if (file != null)
+            {
+                string ImageName = movieDetailModel.Id + Path.GetExtension(file.FileName);
+                string SavePath = Path.Combine(_configuration["ImagesFolder"], ImageName);
+                using (var stream = new FileStream(SavePath, FileMode.Create))
+                {
+                    file.CopyTo(stream);
+                }
+            }
             return RedirectToAction("Index");
         }
     }

@@ -18,23 +18,9 @@ namespace Multiplex.Controllers
 
         public IActionResult Index()
        {
-            var runsModels = Service.GetAll();
-
-            var listingResult = runsModels.Select(result => new RunIndexListingModel
-            {
-                Id = result.Id,
-                DateTime = result.Date,
-                MovieId = result.Movie.Id,
-                RoomName = result.Room.RoomName
-            });
-
-            var model = new RunIndexModel()
-            {
-                Runs = listingResult
-            };
+            var model = Service.GetAll();
 
             return View(model);
-
         }
 
         public IActionResult Detail(int id)
@@ -42,6 +28,11 @@ namespace Multiplex.Controllers
             var model = Service.GetById(id);
 
             return View(model);
+        }
+
+        public IActionResult ErrorModel()
+        {
+            return View();
         }
 
         [HttpPost]
@@ -52,7 +43,7 @@ namespace Multiplex.Controllers
         }
 
         [HttpPost]
-        public ActionResult SaveRun(string selectedSeats)
+        public IActionResult SaveRun(string selectedSeats)
         {
             var result = JsonConvert.DeserializeObject<SeatRunDetailViewModel>(selectedSeats);
             foreach (var seatRun in result.SeatRuns)
@@ -60,7 +51,19 @@ namespace Multiplex.Controllers
                 Service.Update(seatRun);
             }
 
-            return RedirectToAction("Runs/Index");
+            var runDetailModel = Service.GetRunDetailModel(result.SeatRuns.FirstOrDefault());
+            runDetailModel.MoviePoster = null;
+            runDetailModel.BookedSeats = new List<string>();
+            foreach (var seatRun in result.SeatRuns)
+            {
+                runDetailModel.BookedSeats.Add(seatRun.SeatName);
+            }
+            return Json(Url.Action("RunTickets", "Runs", runDetailModel));       
+        }
+
+        public IActionResult RunTickets(RunDetailModel runDetailModel)
+        {
+            return View(runDetailModel);
         }
 
         public IActionResult AddRun()
@@ -75,11 +78,11 @@ namespace Multiplex.Controllers
             bool addRunModels = Service.AddRunModel(model);
             if (addRunModels)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Movies");
             }
             else
             {
-                return RedirectToAction("ErrorModel");
+                return RedirectToAction("ErrorModel","Runs");
             }
         }
     }

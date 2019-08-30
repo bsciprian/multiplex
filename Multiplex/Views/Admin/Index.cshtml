@@ -1,28 +1,20 @@
 ﻿@model MultiplexServices.Models.Admin.AdminModel
 <div class="container">
     <div class="page-header page-header clearfix detailHeading">
-        <h2 class="text-muted">Administration</h2>
+        <h2 class="text-muted" style="text-align:center;">Administration</h2>
     </div>
 </div>
-
-    <div class="row">
-        <div class="col-md-4">
-            <div>
-                <a asp-area="" asp-controller="Rooms" asp-action="AddRoom">Add New Room</a>
-            </div>
-            <div>
-                <a asp-area="" asp-controller="Rooms" asp-action="Index">Manage Rooms</a>
-            </div>
-            <div>
-                <a asp-area="" asp-controller="Movies" asp-action="AddMovie">AddMovie</a>
-            </div>
-            <div>
-                <a asp-area="" asp-controller="Runs" asp-action="AddRun">AddMovie</a>
-            </div>
-        </div>
-        <div class="col-md-4">
-        </div>
-        <div class="col-md-4">
-          
-        </div>
+<div class="row">
+    <div>
+        <p style="text-align:center;"><a class="btn btn-lg btn-info" role="button" asp-controller="Rooms" asp-action="AddRoom">Add New Room</a></p>
     </div>
+    <div>
+        <p style="text-align:center;"><a class="btn btn-lg btn-info" role="button" asp-controller="Rooms" asp-action="Index">Manage Rooms</a></p>
+    </div>
+    <div>
+        <p style="text-align:center;"><a class="btn btn-lg btn-info" role="button" asp-controller="Movies" asp-action="AddMovie">Add New Movie</a></p>
+    </div>
+    <div>
+        <p style="text-align:center;"><a class="btn btn-lg btn-info" role="button" asp-controller="Runs" asp-action="AddRun">Add New Run</a></p>
+    </div>
+</div>

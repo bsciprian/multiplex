@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Multiplex.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         public IActionResult Index()

@@ -1,7 +1,7 @@
 ﻿@model MultiplexServices.Models.Runs.RunDetailModel
 <div class="container">
     <div class="page-header page-header clearfix detailHeading">
-        <h2 class="text-muted">View Run Item</h2>
+        <h1 class="text-muted"></h1>
     </div>
 </div>
 
@@ -9,18 +9,22 @@
     <div class="row">
         <div class="col-md-4">
             <div>
-                <img class="detailImage" src="@Model.MoviePoster" />
+                <img src="data:image/png;base64,@Model.MoviePoster" />
             </div>
         </div>
         <div class="col-md-4">
-            <p id="itemTitle">@Model.MovieName</p>
-            <p id="itemDuration">@Model.MovieDuration</p>
-            <p id="itemDescription">@Model.MovieDescription</p>
-            <p id="itemType">@Model.MovieType</p>
+            <h2 id="itemTitle">@Model.MovieName @Model.MovieType</h2>
+            <label>Date:</label>
+            <p>@Model.DateTime.ToString("dd MMM hh:mm tt")</p>
+            <label>Duration:</label>
+            <p id="itemDuration">@Model.MovieDuration.Hours hours and @Model.MovieDuration.Minutes minutes.</p>
+
         </div>
         <div class="col-md-4">
-
-                @{int n = 0;
+            <div style='background-color:lightblue;border:1px solid black; text-align:center' id="screen">
+                Screen
+            </div>
+            @{int n = 0;
                 <table class="table table-condensed" id="seatsIndexTable">
                     <tbody>
 
@@ -34,7 +38,6 @@
                                         {
                                             @Html.Hidden("IsBooked" + @Model.Seats[n].SeatName, Model.Seats[n].IsBooked)
                                             <div class="" style='background-color:green;border:1px solid black; text-align:center' onclick="onSeatClicked(@Model.Seats[n].SeatName,@Model.Seats[n].SeatRoomID)" id="@Model.Seats[n].SeatName">
-
                                                 @Model.Seats[n].SeatName
                                             </div>
                                         }
@@ -47,14 +50,14 @@
                                     </td>
                                     n = n + 1;
                                 }
-
                             </tr>
-
                         }
 
                     </tbody>
                 </table>
-                <button value="Save" onclick="onSaveClicked()">Save</button>
+                <div class="col text-center">
+                    <button value="Save" onclick="onSaveClicked()">Sell Selected Tickets</button>
+                </div>
             }
         </div>
     </div>
@@ -70,6 +73,9 @@
     function onSaveClicked() {
         var selectedSeatsJson = "{\"SeatRuns\":" + JSON.stringify(selectedSeats) + "}";
         $.post('/Runs/SaveRun', { selectedSeats: selectedSeatsJson }, function (data) {
-        });
+            window.location.href = data;
+        }
+        );
     }
+
 </script>

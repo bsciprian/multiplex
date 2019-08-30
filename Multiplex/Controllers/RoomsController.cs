@@ -13,11 +13,7 @@ namespace Multiplex.Controllers
 
         public IActionResult Index()
         {
-            var rooms = Service.GetAll();
-            var model = new RoomIndexModel()
-            {
-                Rooms = rooms
-            };
+            var model = Service.GetAll();    
             return View(model);
         }
 

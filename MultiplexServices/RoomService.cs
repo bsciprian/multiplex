@@ -25,9 +25,14 @@ namespace MultiplexServices
             return new RoomModel { RoomName = room.RoomName, Seats = room.SeatsNumber, Id = room.Id };
         }
 
-        public IEnumerable<RoomModel> GetAll()
+        public RoomIndexModel GetAll()
         {
-            return DbContext.Rooms.Select(x => this.ToModel(x)).ToList();
+           var model = new RoomIndexModel()
+           {
+               Rooms = DbContext.Rooms.Select(x => this.ToModel(x)).ToList()
+           };
+            
+            return model;
         }
 
         public RoomModel GetById(int id)
@@ -41,16 +46,14 @@ namespace MultiplexServices
             var entity = FromModel(roomModel);
             DbContext.Add(entity);
             var rows = entity.SeatsNumber.Split(',').Select(Int32.Parse).ToList();
-            int letter = 64;
+            int letter = 65;
             for (int i = 0; i < rows.Count; i++)
-            {
+            {;
                 for (int j = 0; j < rows[i]; j++)
                 {
-                    int seatRowNumber = 1;
-                    var seatRoom = new SeatRoom { RoomId = entity.Id, SeatName = ((Char)(letter + seatRowNumber)).ToString()
-                        + seatRowNumber.ToString() };
+                    var seatRoom = new SeatRoom { RoomId = entity.Id, SeatName = ((Char)(letter)).ToString()
+                        + (j+1).ToString() };
                     DbContext.Add(seatRoom);
-                    seatRowNumber++;
                 }
                 letter++;
             }

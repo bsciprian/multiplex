@@ -1,35 +1,41 @@
 ﻿@model MultiplexServices.Models.Movies.MovieDetailModel
 <div class="container">
     <div class="page-header page-header clearfix detailHeading">
-        <h2 class="text-muted">Add Movie</h2>
+        <h2 class="text-muted" style="text-align:center;"/>Add a new movie</h2>
     </div>
 </div>
 <div class="col-md-12">
-    @using (Html.BeginForm("AddMovie", "Movies", FormMethod.Post))
+    @using (Html.BeginForm("AddMovie", "Movies", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
 
-        <p>
+        <p style="text-align:center;">
             @Html.LabelFor(p => p.Title)
             @Html.TextBoxFor(p => p.Title)
         </p>
-        <p>
-            @Html.LabelFor(p => p.Description)
-            @Html.TextBoxFor(p => p.Description)
-        </p>
-        <p>
-            @Html.LabelFor(p => p.Duration)
-            @Html.TextBoxFor(p => p.Duration)
-        </p>
-        <p>
+
+        <p style="text-align:center;">
             @Html.LabelFor(p => p.Year)
             @Html.TextBoxFor(p => p.Year)
         </p>
-        <p>
+        <p style="text-align:center;">
             @Html.LabelFor(p => p.Type)
             @Html.TextBoxFor(p => p.Type)
-        </p>       
+        </p>
+        <p style="text-align:center;">
+            @Html.LabelFor(p => p.Duration)
+            @Html.TextBoxFor(p => p.Duration)
+        </p>
+        <p style="text-align:center;">
+            @Html.LabelFor(p => p.Description)
+            @Html.TextBoxFor(p => p.Description)
+        </p>
 
-        <input type="submit" value="Add" />
+        <p align="center"><input type="file" name="file" style="align-self:center" /></p>
+        
+        <div style="text-align:center;">
+            <input type="submit" value="Add" />
+        </div>
+        
     }
 </div>
 

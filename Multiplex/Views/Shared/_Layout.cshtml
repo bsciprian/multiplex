@@ -1,4 +1,4 @@
-﻿@using Microsoft.AspNetCore.Authorization
+﻿    @using Microsoft.AspNetCore.Authorization
 @inject IAuthorizationService AuthorizationService
 
 <!DOCTYPE html>
@@ -31,7 +31,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Multiplex</a>
+                <a asp-area="" asp-controller="Movies" asp-action="Index" class="navbar-brand">Multiplex</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -52,12 +52,14 @@
 
     <partial name="_CookieConsentPartial" />
 
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; 2019 - Multiplex</p>
-        </footer>
+    <div class="container body-content col-sm-12 col-md-12 col-xs-12 container">
+        <row>
+            @RenderBody()
+            <hr />
+            <footer>
+                <p>&copy; 2019 - Multiplex</p>
+            </footer>
+        </row>
     </div>
 
     <environment include="Development">

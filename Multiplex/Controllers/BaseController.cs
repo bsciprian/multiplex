@@ -9,6 +9,8 @@ namespace Multiplex.Controllers
     {
         protected TService Service;
 
+        public static readonly log4net.ILog log = log4net.LogManager.GetLogger(typeof(BaseController<TModel, TService>));
+
         protected BaseController(TService service)
         {
             Service = service;
