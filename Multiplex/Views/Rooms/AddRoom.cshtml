@@ -7,17 +7,16 @@
 <div class="col-md-12">
     @using (Html.BeginForm("AddRoom", "Rooms", FormMethod.Post))
     {
-
-        <p style="text-align:center;">
+        <p class="centeredp">
             @Html.LabelFor(p => p.RoomName)
             @Html.TextBoxFor(p => p.RoomName)
         </p>
-        <p style="text-align:center;">
+        <p class="centeredp">
             @Html.LabelFor(p => p.Seats)
             @Html.TextBoxFor(p => p.Seats)
         </p>
 
-        <p style="text-align:center;">
+        <p class="centeredp">
     <input type="submit" value="Save"/>
         </p>
     }

@@ -7,29 +7,26 @@
 <div class="col-md-12">
     @using (Html.BeginForm("AddMovie", "Movies", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
-
-        <p style="text-align:center;">
+        <p class="centeredp">
             @Html.LabelFor(p => p.Title)
             @Html.TextBoxFor(p => p.Title)
         </p>
-
-        <p style="text-align:center;">
+        <p class="centeredp">
             @Html.LabelFor(p => p.Year)
             @Html.TextBoxFor(p => p.Year)
         </p>
-        <p style="text-align:center;">
+        <p class="centeredp">
             @Html.LabelFor(p => p.Type)
             @Html.TextBoxFor(p => p.Type)
         </p>
-        <p style="text-align:center;">
+        <p class="centeredp">
             @Html.LabelFor(p => p.Duration)
             @Html.TextBoxFor(p => p.Duration)
         </p>
-        <p style="text-align:center;">
+        <p class="centeredp">
             @Html.LabelFor(p => p.Description)
             @Html.TextBoxFor(p => p.Description)
-        </p>
-
+        </p class="centeredp">
         <p align="center"><input type="file" name="file" style="align-self:center" /></p>
         
         <div style="text-align:center;">

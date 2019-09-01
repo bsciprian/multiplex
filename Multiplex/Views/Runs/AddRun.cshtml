@@ -6,19 +6,19 @@
         @using (Html.BeginForm("AddRun", "Runs", FormMethod.Post))
         {
 
-            <p style="text-align:center;">
+            <p class="centeredp">
                 @Html.LabelFor(p => p.RoomName)
                 @Html.DropDownListFor(p => p.RoomName, new SelectList(Model.RoomNames, "Room"))
             </p>
-            <p style="text-align:center;">
+            <p class="centeredp">
                 @Html.LabelFor(p => p.MovieName)
                 @Html.DropDownListFor(p => p.MovieName, new SelectList(Model.MoviesTitle, "Movie"))
             </p>
-            <p style="text-align:center;">
+            <p class="centeredp">
                 @Html.LabelFor(p => p.DateTime)
                 @Html.TextBoxFor(p => p.DateTime)
             </p>
-            <p style="text-align:center;">
+            <p class="centeredp">
                 <input type="submit" value="Save" />
             </p>
          }

@@ -35,3 +35,19 @@ body {
         display: none;
     }
 }
+
+.centeredp {
+    text-align:center;
+}
+
+.seat {
+    background-color: green;
+    border: 1px solid black;
+    text-align: center;
+}
+
+.bookedSeat {
+    background-color: red;
+    border: 1px solid black;
+    text-align: center;
+}

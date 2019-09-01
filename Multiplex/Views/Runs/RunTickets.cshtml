@@ -1,17 +1,17 @@
 ﻿@model MultiplexServices.Models.Runs.RunDetailModel
 <div class="page-header page-header clearfix detailHeading">
-    <h2 class="text-muted">Tickets were booked!</h2>
+    <h2>Tickets were booked!</h2>
 </div>
 @{int i = 0;
 <div class="col-md-12">
     @foreach (var seat in @Model.BookedSeats)
     {
     <div class="col-md-3" style='background-color:lightgray; margin:1px'>
-        <p style="text-align:center;">Movie: @Model.MovieName</p>
-        <p style="text-align:center;">Type: @Model.MovieType</p>
-        <p style="text-align:center;">Time: @Model.DateTime.ToShortTimeString()</p>
-        <p style="text-align:center;">Room: @Model.RoomName </p>
-        <p style="text-align:center;">Seat: @seat </p>
+        <p class="centeredp">Movie: @Model.MovieName</p>
+        <p class="centeredp">Type: @Model.MovieType</p>
+        <p class="centeredp">Time: @Model.DateTime.ToShortTimeString()</p>
+        <p class="centeredp">Room: @Model.RoomName </p>
+        <p class="centeredp">Seat: @seat </p>
         @if (@Model.MovieType == "2D")
         {
             i = i + 15;
@@ -27,5 +27,5 @@
     }
 
     <div>
-        <p style="text-align:center;">Price: @i LEI.</p>
+        <p class="centeredp">Price: @i LEI.</p>
     </div>

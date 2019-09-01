@@ -37,13 +37,13 @@
                                         @if (!@Model.Seats[n].IsBooked)
                                         {
                                             @Html.Hidden("IsBooked" + @Model.Seats[n].SeatName, Model.Seats[n].IsBooked)
-                                            <div class="" style='background-color:green;border:1px solid black; text-align:center' onclick="onSeatClicked(@Model.Seats[n].SeatName,@Model.Seats[n].SeatRoomID)" id="@Model.Seats[n].SeatName">
+                                            <div class="seat" onclick="onSeatClicked(@Model.Seats[n].SeatName,@Model.Seats[n].SeatRoomID)" id="@Model.Seats[n].SeatName">
                                                 @Model.Seats[n].SeatName
                                             </div>
                                         }
                                         else
                                         {
-                                            <div style='background-color:red;border:1px solid black; text-align:center' id="@Model.Seats[n]">
+                                            <div class="bookedSeat" id="@Model.Seats[n]">
                                                 @Model.Seats[n].SeatName
                                             </div>
                                         }
